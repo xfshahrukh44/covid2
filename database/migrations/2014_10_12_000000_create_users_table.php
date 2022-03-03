@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('last_location');
             $table->string('violation_count')->default(0);
             $table->dateTime('completion_date');
-            $table->dateTime('last seen');
+            $table->dateTime('last_seen');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
