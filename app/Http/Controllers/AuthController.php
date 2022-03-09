@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+<<<<<<< HEAD
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -26,6 +27,27 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
+=======
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Hash;
+
+class AuthController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
+    public function login(Request $request)
+    {
+//        $credentials = request(['email', 'password']);
+        $credentials = [
+            "email" => $request->email,
+            "password" => $request->password
+        ];
+>>>>>>> f272618700616676754140c5188610f6ebcfd358
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -34,21 +56,36 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
+    public function register(Request $request)
+    {
+        User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'type' => $request->type,
+            'passport_number' => $request->passport_number,
+            'city' => $request->city,
+            'key' => $request->key,
+            'last_pcr_result' => $request->last_pcr_result,
+            'quarantine_status' => $request->quarantine_status,
+        ]);
+
+        return $this->login($request);
+    }
+
+    public function update(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->update(Arr::except($request->all(), 'id'));
+        return $user;
+    }
+
     public function me()
     {
         return response()->json(auth()->user());
     }
 
-    /**
-     * Log the user out (Invalidate the token).
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function logout()
     {
         auth()->logout();
@@ -56,23 +93,11 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-    /**
-     * Refresh a token.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
     }
 
-    /**
-     * Get the token array structure.
-     *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     protected function respondWithToken($token)
     {
         return response()->json([
