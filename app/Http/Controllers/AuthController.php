@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -37,10 +38,20 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
             'type' => $request->type,
             'passport_number' => $request->passport_number,
-            'city' => $request->city
+            'city' => $request->city,
+            'key' => $request->key,
+            'last_pcr_result' => $request->last_pcr_result,
+            'quarantine_status' => $request->quarantine_status,
         ]);
 
         return $this->login($request);
+    }
+
+    public function update(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $user->update(Arr::except($request->all(), 'id'));
+        return $user;
     }
 
     public function me()
