@@ -12,7 +12,7 @@ label{
     font-size: 14px;
     font-weight: 300;
 }
-input, .form-control, .input-group-text{
+.input_css, .form-control, .input-group-text{
     background: #EEF7F9;
     border: 0;
     padding: 10px;
@@ -31,7 +31,7 @@ input, .form-control, .input-group-text{
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
 }
-input[type=text]:focus, .form-control:focus {
+.input_css[type=text]:focus, .form-control:focus {
     background: #EEF7F9;
     border: 0;
     padding: 10px;
@@ -42,4 +42,134 @@ input[type=text]:focus, .form-control:focus {
     font-weight: 300;
     font-size: 14px;
     font-weight: 300;
+}
+
+.navbar-brand {
+    padding-top: 0.3125rem;
+    padding-bottom: 0.3125rem;
+    margin-right: 1rem;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-left: 7%;
+}
+.logout_div{
+    margin-right: 7%;
+}
+
+@media only screen and (max-width: 400px) {
+    .logout_div{
+        margin-right: 0;
+        margin-top: 4%;
+        margin-left: 3%;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .navbar-brand {
+        padding-top: 0.3125rem;
+        padding-bottom: 0.3125rem;
+        margin-right: 1rem;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+        white-space: nowrap;
+        margin-left: 0;
+    }
+    .logout_div{
+        margin-right: 0;
+        margin-top: 0;
+        margin-left: 0;
+    }
+}
+
+.logout_btn{
+    text-decoration: none;
+}
+
+.dashboard_heading{
+    font-size: 28px;
+    font-weight: bold;
+}
+.dashboard_heading1{
+    font-size: 18px;
+    font-weight: bold;
+    color: #3D3D3D;
+}
+.text1{
+    font-size: 20px;
+    font-weight: 100;
+}
+.notification_card{
+    max-height: 42vh;
+    overflow-y: auto;
+    border: 0;
+
+}
+/* Works on Firefox */
+.notification_card {
+    scrollbar-width: thin;
+    scrollbar-color: #EEF7F9 transparent;
+}
+  
+/* Works on Chrome, Edge, and Safari */
+.notification_card::-webkit-scrollbar {
+    width: 12px;
+}
+  
+.notification_card::-webkit-scrollbar-track {
+    background: transparent;
+}
+  
+.notification_card::-webkit-scrollbar-thumb {
+    background-color: #94B4BB;
+    border: 3px solid transparent;
+}
+.notification_li ,.notification_card{
+    background-color: #EEF7F9;
+}
+.list-group-item{
+    position: relative;
+    display: block;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border:2px solid #D5E7EB;
+}
+.list-group-item > i{
+    font-size: 30px;
+    color: #2C8FFE;
+    margin-right: 20px;
+}
+.setting_icon{
+    font-size: 30px;
+    color: #2C8FFE;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+.table_tr{
+    background: #12274a;
+    color: white;
+    font-size: 18px;
+}
+.table_b_tr > td{
+    font-size: 18px;
+    font-weight: lighter;
+}
+.red_dot{
+    height: 20px;
+    width: 20px;
+    background-color: #FF0000;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+}
+.green_dot{
+    height: 20px;
+    width: 20px;
+    background-color: #00DF3D;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    top: 3px;
 }

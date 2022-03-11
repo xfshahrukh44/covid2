@@ -28,7 +28,7 @@
                             <label for="email" >Correo electrónico</label>
                         </li>
                         <li class="list-group-item border-bottom-0">
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Ingresa tu correo electrónico (ej. jrubio@correo.cl)" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="input_css form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Ingresa tu correo electrónico (ej. jrubio@correo.cl)" required autocomplete="email" autofocus>
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -40,10 +40,11 @@
                         </li>
                         <li class="list-group-item border-bottom-0">
                             <div class="input-group mb-3">
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Ingresa tu contraseña" required autocomplete="current-password">
+                                <input id="pass_log_id" type="password" class="input_css form-control @error('password') is-invalid @enderror" name="password" placeholder="Ingresa tu contraseña" required autocomplete="current-password">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">
-                                        <i class="fa-solid fa-eye-slash"></i>
+                                        <!-- <i class="fa-solid fa-eye-slash"></i> -->
+                                        <span toggle="#password-field" class="fa fa-fw fa-eye field_icon toggle-password"></span>
                                     </span>
                                 </div>
                             </div>
@@ -72,4 +73,17 @@
         <div class="col-12 col-sm-12 col-md-2 col-lg-3 col-xl-4"></div>
     </div>
 </div>
+
+<script>
+ $("body").on('click', '.toggle-password', function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $("#pass_log_id");
+  if (input.attr("type") === "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+
+})
+</script>
 @endsection

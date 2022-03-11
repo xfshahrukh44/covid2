@@ -18,7 +18,15 @@ Route::get('/', function () {
 });
 
 Route::get('/email', function () {
-    return view('email_genetics');
+    return view('dashboard.email_genetics');
+});
+
+Route::get('/header', function () {
+    return view('dashboard.layouts.master');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard.dashboard');
 });
 
 Auth::routes();

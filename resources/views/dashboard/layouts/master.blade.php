@@ -30,7 +30,21 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('style.css') }}" rel="stylesheet">
 </head>
+</style>
 <body class="bg-white">
+    <nav class="navbar navbar-light" style="background:#12274A;">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white">
+                <img src="{{asset('dashboard/Group9674.png')}}" alt="">
+                Sistema Automático de trazabilidad
+            </a>
+            <div class="d-flex logout_div">
+                <a class="text-white logout_btn"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fa-solid fa-sign-out"></i>  Cerrar Sesión
+                </a>
+            </div>
+        </div>
+    </nav>
     <div id="app">
         <main class="py-4 ">
             @yield('content')
