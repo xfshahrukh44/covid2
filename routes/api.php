@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group([
 
-    'middleware' => 'api',
+    'middleware' => ['api', 'api_cors'],
     'prefix' => 'auth',
     'namespace' => 'App\Http\Controllers'
 
