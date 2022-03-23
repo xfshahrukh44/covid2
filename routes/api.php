@@ -13,24 +13,25 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+header('Access-Control-Allow-Origin', "*");
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group([
-
-    'middleware' => ['api', 'api_cors'],
-    'prefix' => 'auth',
-    'namespace' => 'App\Http\Controllers'
-
-], function ($router) {
-
+//auth
+Route::group(['middleware' => ['api'], 'prefix' => 'auth', 'namespace' => 'App\Http\Controllers'], function ($router) {
     Route::post('login', 'AuthController@login');
     Route::post('register', 'AuthController@register');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::get('me', 'AuthController@me');
     Route::put('update', 'AuthController@update');
+});
 
+
+//admin routes
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'admin', 'namespace' => 'App\Http\Controllers'], function ($router) {
+//    users
+    Route::get('/users', 'UserController@index');
 });

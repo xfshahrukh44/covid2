@@ -19,3 +19,12 @@ if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
 }
 
 require_once __DIR__.'/public/index.php';
+
+//header("Access-Control-Allow-Origin: *");
+//header("Access-Control-Allow-Methods", "DELETE, POST, GET, OPTIONS");
+//header("Access-Control-Allow-Headers:*");
+//header('Access-Control-Allow-Headers: X-Requested-With');
+//
+//if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {//send back preflight request response
+//    return "";
+//}

@@ -36,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
         'quarantine_status',
     ];
 
-    
+
     // Rest omitted for brevity
 
     /**
@@ -77,20 +77,4 @@ class User extends Authenticatable implements JWTSubject
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * @return mixed
-     */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
 }
