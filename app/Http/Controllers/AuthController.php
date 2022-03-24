@@ -77,12 +77,14 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         $user = User::find(auth()->user()->id)->toArray();
+        $ms = Carbon::now()->addSeconds(86400)->timestamp;
         $res = [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'expiry' => Carbon::now()->addSeconds(86400),
+            'expiry' => Carbon::now()->addSeconds(86400)
         ];
+//        dd($res);
 
         return response()->json(array_merge($user, $res));
     }
