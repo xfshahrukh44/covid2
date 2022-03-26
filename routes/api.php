@@ -35,3 +35,9 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'admin', 'namespace' => 
 //    users
     Route::get('/users', 'UserController@index');
 });
+
+// user routes
+Route::group(['prefix' => 'customer', 'namespace' => 'App\Http\Controllers'], function () {
+    Route::post('/register', 'CustomerController@register');
+    Route::post('/login', 'CustomerController@login');
+});
