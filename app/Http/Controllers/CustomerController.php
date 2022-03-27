@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
+
+    public function index(Request $request) {
+        return response()->json(User::all());
+    }
+
     public function register(Request $request)
     {
         $input = $request->all();
@@ -97,5 +102,25 @@ class CustomerController extends Controller
 //        dd($res);
 
         return response()->json(array_merge($user, $res));
+    }
+
+    public function update_any(Request $request, $id) {
+        if(!$user = User::find($id))
+        {
+            return response()->json(['error' => 'Not found']);
+        }
+
+        $user->update($request->all());
+
+        return response()->json($user);
+    }
+
+    public function show(Request $request, $id) {
+        if(!$user = User::find($id))
+        {
+            return response()->json(['error' => 'Not found']);
+        }
+
+        return response()->json($user);
     }
 }
