@@ -39,3 +39,12 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'admin', 'namespace' => 
     Route::put('/user/{id}', 'UserController@update');
     Route::delete('/user/{id}', 'UserController@destroy');
 });
+
+// user routes
+Route::group(['prefix' => 'customer', 'namespace' => 'App\Http\Controllers'], function () {
+    Route::post('/register', 'CustomerController@register');
+    Route::post('/login', 'CustomerController@login');
+    Route::get('/list', 'CustomerController@index');
+    Route::put('/update/{id}', 'CustomerController@update_any');
+    Route::get('/show/{id}', 'CustomerController@show');
+});
