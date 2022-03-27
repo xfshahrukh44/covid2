@@ -34,4 +34,8 @@ Route::group(['middleware' => ['api'], 'prefix' => 'auth', 'namespace' => 'App\H
 Route::group(['middleware' => ['auth:api'], 'prefix' => 'admin', 'namespace' => 'App\Http\Controllers'], function ($router) {
 //    users
     Route::get('/users', 'UserController@index');
+    Route::post('/user', 'UserController@store');
+    Route::get('/user/{id}', 'UserController@show');
+    Route::put('/user/{id}', 'UserController@update');
+    Route::delete('/user/{id}', 'UserController@destroy');
 });
