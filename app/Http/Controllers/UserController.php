@@ -15,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
+        $users = User::where('type', 'admin')->paginate(10);
 
         $response = [
             'pagination' => [

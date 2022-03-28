@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('mother_name')->nullable();
             $table->string('type')->nullable();
             $table->string('dni')->nullable();
+            $table->string('unique_key')->nullable();
             $table->string('commune_visit')->nullable();
             $table->string('passport_number')->nullable();
             $table->string('origin_country')->nullable();
