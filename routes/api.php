@@ -19,32 +19,34 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//auth
-Route::group(['middleware' => ['api'], 'prefix' => 'auth', 'namespace' => 'App\Http\Controllers'], function ($router) {
-    Route::post('login', 'AuthController@login');
-    Route::post('register', 'AuthController@register');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::get('me', 'AuthController@me');
-    Route::put('update', 'AuthController@update');
-});
+// admin routes
+Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin'], function ($router) {
+//    entry
+    Route::post('login', 'AdminController@login');
+    Route::post('register', 'AdminController@register');
 
+    Route::group(['middleware' => ['admin_api']], function ($router) {
+//        auth
+        Route::post('logout', 'AdminController@logout');
+        Route::post('refresh', 'AdminController@refresh');
+        Route::get('me', 'AdminController@me');
+        Route::put('update', 'AdminController@update');
 
-//admin routes
-Route::group(['middleware' => ['auth:api'], 'prefix' => 'admin', 'namespace' => 'App\Http\Controllers'], function ($router) {
-//    users
-    Route::get('/users', 'UserController@index');
-    Route::post('/user', 'UserController@store');
-    Route::get('/user/{id}', 'UserController@show');
-    Route::put('/user/{id}', 'UserController@update');
-    Route::delete('/user/{id}', 'UserController@destroy');
+//        users
+        Route::get('/', 'AdminController@index');
+        Route::post('/', 'AdminController@store');
+        Route::get('/{id}', 'AdminController@show');
+        Route::put('/{id}', 'AdminController@update');
+        Route::delete('/{id}', 'AdminController@destroy');
+
+    });
 });
 
 // user routes
-Route::group(['prefix' => 'customer', 'namespace' => 'App\Http\Controllers'], function () {
-    Route::post('/register', 'CustomerController@register');
-    Route::post('/login', 'CustomerController@login');
-    Route::get('/list', 'CustomerController@index');
-    Route::put('/update/{id}', 'CustomerController@update_any');
-    Route::get('/show/{id}', 'CustomerController@show');
+Route::group(['prefix' => 'user', 'namespace' => 'App\Http\Controllers'], function () {
+    Route::post('/register', 'UserController@register');
+    Route::post('/login', 'UserController@login');
+    Route::get('/list', 'UserController@index');
+    Route::put('/update', 'UserController@update_any');
+    Route::get('/show/{id}', 'UserController@show');
 });

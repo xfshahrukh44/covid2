@@ -2,8 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminAPI;
 use App\Http\Middleware\APICors;
 use App\Http\Middleware\Cors;
+use App\Http\Middleware\UserAPI;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,5 +68,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'api_cors' => Cors::class,
+        'admin_api' => AdminAPI::class,
+        'user_api' => UserAPI::class,
     ];
 }
