@@ -12,7 +12,7 @@ class CustomerController extends Controller
 {
 
     public function index(Request $request) {
-        return response()->json(User::all());
+        return response()->json(User::where('type', 'customer')->get());
     }
 
     public function register(Request $request)
@@ -20,19 +20,21 @@ class CustomerController extends Controller
         $input = $request->all();
 
         $request->validate([
-            'dni' => 'required',
+            'dni' => 'sometimes',
+            'unique_key' => 'sometimes',
             'passport_number' => 'required',
             'first_name' => 'required',
             'last_name' => 'required',
             'mother_name' => 'required',
             'origin_country' => 'required',
             'commune_visit' => 'required',
-            'email' => 'required|email',
+            'email' => 'sometimes|email',
             'password' => 'required',
         ]);
 
         $user = User::create([
             'dni' => $request['dni'],
+            'unique_key' => $request['unique_key'],
             'passport_number' => $request['passport_number'],
             'first_name' => $request['first_name'],
             'last_name' => $request['last_name'],
@@ -52,7 +54,8 @@ class CustomerController extends Controller
 
         $this->validate($request, [
             'email' => 'sometimes|email',
-            'dni' => 'sometimes',
+//            'dni' => 'sometimes',
+            'unique_key' => 'sometimes',
             'password' => 'required'
         ]);
 
@@ -62,7 +65,7 @@ class CustomerController extends Controller
         ];
 
         $credentials2 = [
-            "dni" => $request->dni,
+            "unique_key" => $request->unique_key,
             "password" => $request->password
         ];
 

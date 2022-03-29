@@ -20,7 +20,7 @@
                     <div class="mb-3">
                         <span class="heading_1">Automático de trazabilidad</span>
                     </div>
-        
+
                 </div>
                 <form method="POST" action="{{ route('login') }}">
                     <ul class="list-group list-group-flush" style="padding-left: 30px;">

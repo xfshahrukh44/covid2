@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -14,7 +15,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
+        $users = User::where('type', 'admin')->paginate(10);
 
         $response = [
             'pagination' => [
@@ -39,13 +40,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+//        dd($request->all());
         $request->validate([
+            'email' => 'required|email',
             'first_name' => 'required|string|max:20',
             'last_name' => 'required|string|max:20',
             'password' => 'required|confirmed|min:4',
         ]);
 
-        $user = User::create($request->all());
+        $req = $request->all();
+
+        if($request->has('password')){
+            $req['password'] = Hash::make($request->password);
+        }
+        $req['type'] = 'admin';
+
+        $user = User::create($req);
 //        return $user;
         return response()->json($user);
     }
@@ -71,13 +81,22 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+//        dd($request->all());
         $request->validate([
+            'email' => 'required|email',
             'first_name' => 'required|string|max:20',
             'last_name' => 'required|string|max:20',
             'password' => 'sometimes|confirmed|min:4',
         ]);
 
-        $user = User::find($id)->update($request->all());
+        $req = $request->all();
+
+        if($request->has('password')){
+            $req['password'] = Hash::make($request->password);
+        }
+        $req['type'] = 'admin';
+
+        $user = User::find($id)->update($req);
         return response()->json($user);
     }
 
@@ -89,7 +108,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if($id == auth()->user()->id){
+            return response()->json(['success' => false, 'message' => 'Not allowed']);
+        }
 //        return User::find($id)->destroy();
-        return response()->json(User::find($id)->destroy());
+        return response()->json(User::find($id)->delete());
     }
 }
