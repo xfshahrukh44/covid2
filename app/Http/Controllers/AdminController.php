@@ -97,7 +97,6 @@ class AdminController extends Controller
 
     public function store(Request $request)
     {
-//        dd($request->all());
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'first_name' => 'required|string|max:20',
@@ -124,7 +123,7 @@ class AdminController extends Controller
     public function show($id)
     {
 //        return User::find($id);
-        if(!$user = User::find($id)) {
+        if(!$user = User::find($id) || (User::find($id))->type != 'admin') {
             return response()->json([
                 'success' => false,
                 'message' => 'not found'
@@ -165,9 +164,102 @@ class AdminController extends Controller
         if($id == auth()->user()->id){
             return response()->json(['success' => false, 'message' => 'Not allowed']);
         }
-//        return User::find($id)->destroy();
-//        return User::find($id);
-        if(!$user = User::find($id)) {
+
+        if(!$user = User::find($id) || (User::find($id))->type != 'admin') {
+            return response()->json([
+                'success' => false,
+                'message' => 'not found'
+            ]);
+        }
+
+        return response()->json($user->delete());
+    }
+
+    public function user_index()
+    {
+        $users = User::where('type', 'user')->paginate(10);
+
+        $response = [
+            'pagination' => [
+                'total' => $users->total(),
+                'per_page' => $users->perPage(),
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'from' => $users->firstItem(),
+                'to' => $users->lastItem()
+            ],
+            'data' => $users
+        ];
+
+        return response()->json($response);
+    }
+
+    public function user_store(Request $request)
+    {
+//        $validator = Validator::make($request->all(), [
+//            'email' => 'required|email',
+//            'first_name' => 'required|string|max:20',
+//            'last_name' => 'required|string|max:20',
+//            'password' => 'required|confirmed|min:4',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return response()->json($validator->messages());
+//        }
+
+        $req = $request->all();
+
+        if($request->has('password')){
+            $req['password'] = Hash::make($request->password);
+        }
+        $req['type'] = 'user';
+
+        $user = User::create($req);
+//        return $user;
+        return response()->json($user);
+    }
+
+    public function user_show($id)
+    {
+        if(!$user = User::find($id) || (User::find($id))->type != 'user') {
+            return response()->json([
+                'success' => false,
+                'message' => 'not found'
+            ]);
+        }
+
+        return response()->json($user);
+    }
+
+    public function user_update(Request $request, $id)
+    {
+//        dd($request->all());
+//        $validator = Validator::make($request->all(), [
+//            'email' => 'required|email|unique:users,email,' . $id,
+//            'first_name' => 'required|string|max:20',
+//            'last_name' => 'required|string|max:20',
+//            'password' => 'sometimes|confirmed|min:4',
+//        ]);
+//
+//        if ($validator->fails()) {
+//            return response()->json($validator->messages());
+//        }
+
+        $req = $request->all();
+
+        if($request->has('password')){
+            $req['password'] = Hash::make($request->password);
+        }
+        $req['type'] = 'user';
+
+        $user = User::find($id);
+        $user->update($req);
+        return response()->json($user);
+    }
+
+    public function user_destroy($id)
+    {
+        if(!$user = User::find($id) || (User::find($id))->type != 'user') {
             return response()->json([
                 'success' => false,
                 'message' => 'not found'

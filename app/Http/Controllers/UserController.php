@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 //    old functions moved to AdminController
-    public function index(Request $request) {
-        return response()->json(User::where('type', 'user')->get());
-    }
 
     public function register(Request $request)
     {
@@ -46,6 +43,23 @@ class UserController extends Controller
         ]);
 
         return response()->json($user);
+    }
+
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
     }
 
     public function login(Request $request){
@@ -91,22 +105,13 @@ class UserController extends Controller
         return response()->json(array_merge($user, $res));
     }
 
-    public function update_any(Request $request) {
-        if(!$user = User::find(auth()->user()->id))
-        {
+    public function update(Request $request)
+    {
+        if (!$user = User::find(auth()->user()->id)) {
             return response()->json(['error' => 'Not found']);
         }
 
         $user->update($request->all());
-
-        return response()->json($user);
-    }
-
-    public function show(Request $request, $id) {
-        if(!$user = User::find($id))
-        {
-            return response()->json(['error' => 'Not found']);
-        }
 
         return response()->json($user);
     }

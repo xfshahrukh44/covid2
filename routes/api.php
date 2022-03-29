@@ -32,21 +32,36 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin'], funct
         Route::get('me', 'AdminController@me');
         Route::put('update', 'AdminController@update');
 
-//        users
+//        admin crud
         Route::get('/', 'AdminController@index');
         Route::post('/', 'AdminController@store');
         Route::get('/{id}', 'AdminController@show');
         Route::put('/{id}', 'AdminController@update');
         Route::delete('/{id}', 'AdminController@destroy');
 
+//        user crud
+        Route::get('/user/', 'AdminController@user_index');
+        Route::post('/user/', 'AdminController@user_store');
+        Route::get('/user/{id}', 'AdminController@user_show');
+        Route::put('/user/{id}', 'AdminController@user_update');
+        Route::delete('/user/{id}', 'AdminController@user_destroy');
+
+
     });
 });
 
 // user routes
-Route::group(['prefix' => 'user', 'namespace' => 'App\Http\Controllers'], function () {
-    Route::post('/register', 'UserController@register');
+Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'user'], function () {
     Route::post('/login', 'UserController@login');
-    Route::get('/list', 'UserController@index');
-    Route::put('/update', 'UserController@update_any');
-    Route::get('/show/{id}', 'UserController@show');
+    Route::post('/register', 'UserController@register');
+
+    Route::group(['middleware' => ['user_api']], function ($router) {
+//        auth
+        Route::post('logout', 'UserController@logout');
+        Route::post('refresh', 'UserController@refresh');
+        Route::get('me', 'UserController@me');
+
+//        user crud
+        Route::put('/update', 'UserController@update');
+    });
 });
