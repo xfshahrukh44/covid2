@@ -31,6 +31,7 @@ class User extends Authenticatable implements JWTSubject
         'unique_key',
         'pin',
         'last_location',
+        'current_location',
         'violation_count',
         'completion_date',
         'last_seen',
