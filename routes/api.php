@@ -25,7 +25,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin'], funct
     Route::post('login', 'AdminController@login');
     Route::post('register', 'AdminController@register');
 
-    Route::group(['middleware' => ['admin_api']], function ($router) {
+    Route::group(['middleware' => ['cors', 'admin_api']], function ($router) {
 //        auth
         Route::post('logout', 'AdminController@logout');
         Route::post('refresh', 'AdminController@refresh');
@@ -55,7 +55,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'user'], functi
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
 
-    Route::group(['middleware' => ['user_api']], function ($router) {
+    Route::group(['middleware' => ['cors', 'user_api']], function ($router) {
 //        auth
         Route::post('logout', 'UserController@logout');
         Route::post('refresh', 'UserController@refresh');

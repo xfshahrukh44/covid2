@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('city')->nullable();
             $table->string('pin')->nullable();
             $table->string('last_location')->nullable();
+            $table->string('current_location')->nullable();
             $table->longText('last_pcr_result')->nullable();
             $table->string('quarantine_status')->nullable();
             $table->integer('violation_count')->default(0);
