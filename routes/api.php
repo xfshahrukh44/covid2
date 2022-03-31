@@ -20,12 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // admin routes
-Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin'], function ($router) {
+Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'middleware' => 'cors'], function ($router) {
 //    entry
     Route::post('login', 'AdminController@login');
     Route::post('register', 'AdminController@register');
 
-    Route::group(['middleware' => ['cors', 'admin_api']], function ($router) {
+    Route::group(['middleware' => ['admin_api']], function ($router) {
 //        auth
         Route::post('logout', 'AdminController@logout');
         Route::post('refresh', 'AdminController@refresh');
@@ -51,11 +51,11 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin'], funct
 });
 
 // user routes
-Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'user'], function () {
+Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'user', 'middleware' => 'cors'], function () {
     Route::post('/login', 'UserController@login');
     Route::post('/register', 'UserController@register');
 
-    Route::group(['middleware' => ['cors', 'user_api']], function ($router) {
+    Route::group(['middleware' => ['user_api']], function ($router) {
 //        auth
         Route::post('logout', 'UserController@logout');
         Route::post('refresh', 'UserController@refresh');
