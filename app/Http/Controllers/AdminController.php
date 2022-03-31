@@ -98,7 +98,7 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'first_name' => 'required|string|max:20',
             'last_name' => 'required|string|max:20',
             'password' => 'required|confirmed|min:4',
@@ -197,7 +197,7 @@ class AdminController extends Controller
     public function user_store(Request $request)
     {
 //        $validator = Validator::make($request->all(), [
-//            'email' => 'required|email',
+//            'email' => 'required|email|unique:users',
 //            'first_name' => 'required|string|max:20',
 //            'last_name' => 'required|string|max:20',
 //            'password' => 'required|confirmed|min:4',
