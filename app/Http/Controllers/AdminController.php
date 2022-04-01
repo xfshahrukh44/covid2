@@ -13,7 +13,15 @@ class AdminController extends Controller
 {
     public function login(Request $request)
     {
-//        $credentials = request(['email', 'password']);
+        $validator = Validator::make($request->all(), [
+            'email' => 'sometimes|email',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+        }
+
         $credentials = [
             "email" => $request->email,
             "password" => $request->password
@@ -28,6 +36,17 @@ class AdminController extends Controller
 
     public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'sometimes|unique:users',
+            'password' => 'required|min:4',
+            'first_name' => 'required',
+            'last_name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+        }
+
         User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -196,16 +215,22 @@ class AdminController extends Controller
 
     public function user_store(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'email' => 'required|email|unique:users',
-//            'first_name' => 'required|string|max:20',
-//            'last_name' => 'required|string|max:20',
-//            'password' => 'required|confirmed|min:4',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return response()->json($validator->messages());
-//        }
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users',
+            'first_name' => 'required|string|max:20',
+            'last_name' => 'required|string|max:20',
+            'password' => 'required|confirmed|min:4',
+            'dni' => 'sometimes',
+            'unique_key' => 'sometimes',
+            'passport_number' => 'required',
+            'mother_name' => 'required',
+            'origin_country' => 'required',
+            'commune_visit' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+        }
 
         $req = $request->all();
 
@@ -234,16 +259,22 @@ class AdminController extends Controller
     public function user_update(Request $request, $id)
     {
 //        dd($request->all());
-//        $validator = Validator::make($request->all(), [
-//            'email' => 'required|email|unique:users,email,' . $id,
-//            'first_name' => 'required|string|max:20',
-//            'last_name' => 'required|string|max:20',
-//            'password' => 'sometimes|confirmed|min:4',
-//        ]);
-//
-//        if ($validator->fails()) {
-//            return response()->json($validator->messages());
-//        }
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users',
+            'first_name' => 'required|string|max:20',
+            'last_name' => 'required|string|max:20',
+            'password' => 'required|confirmed|min:4',
+            'dni' => 'sometimes',
+            'unique_key' => 'sometimes',
+            'passport_number' => 'required',
+            'mother_name' => 'required',
+            'origin_country' => 'required',
+            'commune_visit' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+        }
 
         $req = $request->all();
 

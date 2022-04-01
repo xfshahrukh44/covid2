@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -13,9 +14,7 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        $input = $request->all();
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'dni' => 'sometimes',
             'unique_key' => 'sometimes',
             'passport_number' => 'required',
@@ -27,6 +26,10 @@ class UserController extends Controller
             'email' => 'sometimes|email',
             'password' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+        }
 
         $user = User::create([
             'dni' => $request['dni'],
@@ -63,27 +66,28 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
-        $input = $request->all();
-
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'email' => 'sometimes|email',
 //            'dni' => 'sometimes',
             'unique_key' => 'sometimes',
             'password' => 'required'
         ]);
 
-        $credentials = [
+        if ($validator->fails()) {
+            return response()->json($validator->messages());
+        }
+
+        $credentials =  $request->has('email') ?
+        [
             "email" => $request->email,
             "password" => $request->password
-        ];
-
-        $credentials2 = [
+        ] :
+        [
             "unique_key" => $request->unique_key,
             "password" => $request->password
         ];
 
-        if (!($token = auth()->attempt($credentials) || $token = auth()->attempt($credentials2)) || (auth()->user()->type != 'user')) {
-            auth()->logout();
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
