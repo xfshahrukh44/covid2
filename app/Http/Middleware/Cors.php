@@ -18,7 +18,8 @@ class Cors
     {
 //        return dd('asd');
         return $next($request)
-            ->header('Access-Control-Allow-Origin', '*')
+            ->header('Access-Control-Allow-Origin', csrf_token())
+            ->header('_token', '*')
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 }
