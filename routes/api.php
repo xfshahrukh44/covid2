@@ -40,7 +40,7 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'middl
         Route::delete('/{id}', 'AdminController@destroy');
 
 //        user crud
-        Route::get('/user/', 'AdminController@user_index');
+        Route::post('/user', 'AdminController@user_index');
         Route::post('/user/', 'AdminController@user_store');
         Route::get('/user/{id}', 'AdminController@user_show');
         Route::put('/user/{id}', 'AdminController@user_update');

@@ -141,12 +141,12 @@ class AdminController extends Controller
 
     public function show($id)
     {
-//        return User::find($id);
-        if(!$user = User::find($id) || (User::find($id))->type != 'admin') {
-            return response()->json([
-                'success' => false,
-                'message' => 'not found'
-            ]);
+        if(!$user = User::find($id)) {
+            return api_not_found();
+        }
+
+        if($user->type != 'admin') {
+            return api_not_found();
         }
 
         return response()->json($user);
@@ -173,7 +173,10 @@ class AdminController extends Controller
         }
         $req['type'] = 'admin';
 
-        $user = User::find($id);
+        if(!$user = User::find($id)) {
+            return api_not_found();
+        }
+
         $user->update($req);
         return response()->json($user);
     }
@@ -181,20 +184,21 @@ class AdminController extends Controller
     public function destroy($id)
     {
         if($id == auth()->user()->id){
-            return response()->json(['success' => false, 'message' => 'Not allowed']);
+            return api_not_allowed();
         }
 
-        if(!$user = User::find($id) || (User::find($id))->type != 'admin') {
-            return response()->json([
-                'success' => false,
-                'message' => 'not found'
-            ]);
+        if(!$user = User::find($id)) {
+            return api_not_found();
+        }
+
+        if($user->type != 'admin') {
+            return api_not_found();
         }
 
         return response()->json($user->delete());
     }
 
-    public function user_index()
+    public function user_index(Request $request)
     {
         $users = User::where('type', 'user')->paginate(10);
 
@@ -244,13 +248,14 @@ class AdminController extends Controller
         return response()->json($user);
     }
 
-    public function user_show($id)
+    public function user_show(Request $request, $id)
     {
-        if(!$user = User::find($id) || (User::find($id))->type != 'user') {
-            return response()->json([
-                'success' => false,
-                'message' => 'not found'
-            ]);
+        if(!$user = User::find($id)) {
+            return api_not_found();
+        }
+
+        if($user->type != 'user') {
+            return api_not_found();
         }
 
         return response()->json($user);
@@ -258,9 +263,8 @@ class AdminController extends Controller
 
     public function user_update(Request $request, $id)
     {
-//        dd($request->all());
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email,' . $id,
             'first_name' => 'required|string|max:20',
             'last_name' => 'required|string|max:20',
             'password' => 'required|confirmed|min:4',
@@ -290,11 +294,12 @@ class AdminController extends Controller
 
     public function user_destroy($id)
     {
-        if(!$user = User::find($id) || (User::find($id))->type != 'user') {
-            return response()->json([
-                'success' => false,
-                'message' => 'not found'
-            ]);
+        if(!$user = User::find($id)) {
+            return api_not_found();
+        }
+
+        if($user->type != 'user') {
+            return api_not_found();
         }
 
         return response()->json($user->delete());
