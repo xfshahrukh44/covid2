@@ -111,8 +111,8 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-        if (!$user = User::find(auth()->user()->id)) {
-            return response()->json(['error' => 'Not found']);
+        if(!$user = User::find(auth()->user()->id)) {
+            return api_not_found();
         }
 
         $user->update($request->all());
