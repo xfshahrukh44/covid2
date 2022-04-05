@@ -28,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'passport_number',
         'city',
         'dni',
+        'verification_method',
         'unique_key',
         'pin',
         'last_location',
