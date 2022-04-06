@@ -24,6 +24,9 @@ class CreateUsersTable extends Migration
             $table->decimal('latitude', 10, 10)->nullable();
             $table->decimal('longitude', 10, 10)->nullable();
             $table->string('address')->nullable();
+            $table->decimal('residence_latitude', 10, 10)->nullable();
+            $table->decimal('residence_longitude', 10, 10)->nullable();
+            $table->string('residence_address')->nullable();
             $table->dateTime('verifiation_time')->nullable();
             $table->string('unique_key')->nullable();
             $table->string('commune_visit')->nullable();
