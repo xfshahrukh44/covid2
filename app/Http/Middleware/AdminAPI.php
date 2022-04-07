@@ -16,7 +16,8 @@ class AdminAPI
      */
     public function handle(Request $request, Closure $next)
     {
-        if( !auth()->user() || auth()->user()->type != 'admin') {
+//        if( !auth()->user() || auth()->user()->type != 'admin') {
+        if((auth()->user() && auth()->user()->type !='admin') || !auth()->user()){
             if(auth()->user()) {
                 auth()->logout();
             }

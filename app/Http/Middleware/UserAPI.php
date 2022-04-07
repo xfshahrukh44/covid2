@@ -16,17 +16,16 @@ class UserAPI
      */
     public function handle(Request $request, Closure $next)
     {
-        if( !auth()->user() || auth()->user()->type != 'user') {
+        if((auth()->user() && auth()->user()->type !='user') || !auth()->user()){
+//      if( !auth()->user() || auth()->user()->type != 'user') {
             if(auth()->user()) {
                 auth()->logout();
             }
-
             return response()->json([
                 'success' => false,
                 'message' => 'Unauthorized'
             ]);
         }
-
         return $next($request);
     }
 }

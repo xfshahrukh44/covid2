@@ -79,19 +79,24 @@ class UserController extends Controller
             return response()->json($validator->messages());
         }
 
-        $credentials =  $request->has('email') ?
-        [
-            "email" => $request->email,
-            "password" => $request->password
-        ] : $request->has('dni') ?
-        [
-            "dni" => $request->dni,
-            "password" => $request->password
-        ] : $request->has('rut') ?:
-        [
-            "rut" => $request->rut,
-            "password" => $request->password
-        ];
+        if($request->has('email')){
+            $credentials = [
+                "email" => $request->email,
+                "password" => $request->password
+            ];
+        }
+        if($request->has('dni')){
+            $credentials = [
+                "dni" => $request->dni,
+                "password" => $request->password
+            ];
+        }
+        if($request->has('rut')){
+            $credentials = [
+                "rut" => $request->rut,
+                "password" => $request->password
+            ];
+        }
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
