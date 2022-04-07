@@ -10,15 +10,15 @@ class PublicController extends Controller
 {
     public function send_otp(Request $request)
     {
-        $user = User::where('email', $request->email)->get();
+        $user = User::where('email', $request->email)->firstOrFail();
 
-        if(count($user) == 0){
-            return response()->json([
-                'message' => 'No user with your email was found.'
-            ]);
-        }
+        //if(count($user) == 0){
+            //return response()->json([
+                //'message' => 'No user with your email was found.'
+            //]);
+        //}
 
-        $user = $user[0];
+        //$user = $user[0];
         $otp = generate_otp();
         $user->otp = $otp;
         $user->save();
