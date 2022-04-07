@@ -27,7 +27,8 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'public', 'midd
 //    otp
     Route::post('send_otp', 'PublicController@send_otp');
     Route::post('verify_otp', 'PublicController@verify_otp');
-    Route::get('get_civ_data', 'PublicController@get_civ_data');
+    Route::post('get_civ_data', 'PublicController@get_civ_data');
+    Route::post('is_registered', 'PublicController@is_registered');
 });
 
 // admin routes

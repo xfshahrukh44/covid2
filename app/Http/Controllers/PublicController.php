@@ -14,6 +14,7 @@ class PublicController extends Controller
 
         if(count($user) == 0){
             return response()->json([
+                "success" => false,
                 'message' => 'No user with your email was found.'
             ]);
         }
@@ -29,6 +30,7 @@ class PublicController extends Controller
 
 
         return response()->json([
+            "success" => true,
             'message' => 'OTP has been sent to '.$user->email.'.'
         ]);
     }
@@ -39,6 +41,7 @@ class PublicController extends Controller
 
         if(count($user) == 0){
             return response()->json([
+                "success" => false,
                 'message' => 'Wrong OTP.'
             ]);
         }
@@ -48,6 +51,7 @@ class PublicController extends Controller
         $user->save();
 
         return response()->json([
+            "success" => true,
             'message' => 'OTP succesful.'
         ]);
     }
@@ -79,5 +83,41 @@ class PublicController extends Controller
         curl_close($ch);
 
         return response()->json(json_decode($result));
+    }
+
+    public function is_registered(Request $request)
+    {
+        if($request->has('email')){
+            $field = 'email';
+            $value = $request->email;
+        } else if($request->has('dni')){
+            $field = 'dni';
+            $value = $request->dni;
+        } else if($request->has('rut')){
+            $field = 'rut';
+            $value = $request->rut;
+        } else {
+            return response()->json([
+                "success" => false,
+                'message' => 'Please provide correct values.'
+            ]);
+        }
+
+        $user = User::where($field, $value)->where('type', 'user')->get();
+
+        if(count($user) == 0){
+            return response()->json([
+                "success" => false,
+                'message' => 'No user registered with the '.$field.': '.$value.'.'
+            ]);
+        }
+
+        $user = $user[0];
+
+        return response()->json([
+            "success" => true,
+            'message' => 'Registered.',
+            'user' => $user
+        ]);
     }
 }
