@@ -15,7 +15,9 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'dni' => 'sometimes',
+            'dni' => 'nullable|unique:users',
+            'rut' => 'nullable|unique:users',
+            'city' => 'sometimes',
             'unique_key' => 'sometimes',
             'passport_number' => 'required',
             'first_name' => 'required',
@@ -23,7 +25,7 @@ class UserController extends Controller
             'mother_name' => 'required',
             'origin_country' => 'required',
             'commune_visit' => 'required',
-            'email' => 'sometimes|email',
+            'email' => 'nullable|email|unique:users',
             'password' => 'required',
         ]);
 
@@ -68,8 +70,8 @@ class UserController extends Controller
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
             'email' => 'sometimes|email',
-//            'dni' => 'sometimes',
-            'unique_key' => 'sometimes',
+            'dni' => 'sometimes',
+            'rut' => 'sometimes',
             'password' => 'required'
         ]);
 
@@ -81,9 +83,13 @@ class UserController extends Controller
         [
             "email" => $request->email,
             "password" => $request->password
-        ] :
+        ] : $request->has('dni') ?
         [
-            "unique_key" => $request->unique_key,
+            "dni" => $request->dni,
+            "password" => $request->password
+        ] : $request->has('rut') ?:
+        [
+            "rut" => $request->rut,
             "password" => $request->password
         ];
 
@@ -111,11 +117,31 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email,' . auth()->user()->id,
+            'first_name' => 'required|string|max:20',
+            'last_name' => 'required|string|max:20',
+            'password' => 'sometimes|min:4',
+            'dni' => 'nullable|unique:users,dni,' . auth()->user()->id,
+            'rut' => 'nullable|unique:users,rut,' . auth()->user()->id,
+            'city' => 'sometimes',
+            'unique_key' => 'sometimes',
+            'passport_number' => 'sometimes',
+            'mother_name' => 'sometimes',
+            'origin_country' => 'sometimes',
+            'commune_visit' => 'sometimes',
+        ]);
+
         if(!$user = User::find(auth()->user()->id)) {
             return api_not_found();
         }
 
-        $user->update($request->all());
+        $req = $request->all();
+        if($request->has('password')){
+            $req['password'] = Hash::make($request['password']);
+        }
+
+        $user->update($req);
 
         return response()->json($user);
     }

@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('mother_name')->nullable();
             $table->string('type')->nullable();
-            $table->string('dni')->nullable();
+            $table->string('dni')->unique()->nullable();
+            $table->string('rut')->unique()->nullable();
             $table->integer('verification_method`')->nullable();
             $table->decimal('latitude', 10, 10)->nullable();
             $table->decimal('longitude', 10, 10)->nullable();
@@ -42,9 +43,11 @@ class CreateUsersTable extends Migration
             $table->integer('violation_count')->default(0);
             $table->dateTime('completion_date')->nullable();
             $table->dateTime('last_seen')->nullable();
+            $table->dateTime('verified_on')->nullable();
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('otp')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

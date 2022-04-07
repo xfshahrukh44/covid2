@@ -22,6 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//public routes
+Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'public', 'middleware' => 'cors'], function ($router) {
+//    otp
+    Route::get('send_otp', 'PublicController@send_otp');
+    Route::get('verify_otp', 'PublicController@verify_otp');
+});
+
 // admin routes
 Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'middleware' => 'cors'], function ($router) {
 //    entry
