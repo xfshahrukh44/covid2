@@ -25,8 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //public routes
 Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'public', 'middleware' => 'cors'], function ($router) {
 //    otp
-    Route::get('send_otp', 'PublicController@send_otp');
-    Route::get('verify_otp', 'PublicController@verify_otp');
+    Route::post('send_otp', 'PublicController@send_otp');
+    Route::post('verify_otp', 'PublicController@verify_otp');
     Route::get('get_civ_data', 'PublicController@get_civ_data');
 });
 
