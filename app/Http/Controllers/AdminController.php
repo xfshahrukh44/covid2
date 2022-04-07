@@ -217,6 +217,11 @@ class AdminController extends Controller
         return response()->json($response);
     }
 
+    public function all_users()
+    {
+        return User::where('type', 'user')->get();
+    }
+
     public function user_store(Request $request)
     {
         $validator = Validator::make($request->all(), [

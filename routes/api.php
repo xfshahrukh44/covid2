@@ -38,12 +38,13 @@ Route::group(['namespace' => 'App\Http\Controllers', 'prefix' => 'admin', 'middl
 //        admin crud
         Route::get('/', 'AdminController@index');
         Route::post('/', 'AdminController@store');
-        Route::get('/{id}', 'AdminController@show');
-        Route::put('/{id}', 'AdminController@update');
-        Route::delete('/{id}', 'AdminController@destroy');
+        Route::get('/show/{id}', 'AdminController@show');
+        Route::put('/update/{id}', 'AdminController@update');
+        Route::delete('/delete/{id}', 'AdminController@destroy');
 
 //        user crud
         Route::post('/user', 'AdminController@user_index');
+        Route::get('/all_users', 'AdminController@all_users');
         Route::post('/user/', 'AdminController@user_store');
         Route::get('/user/{id}', 'AdminController@user_show');
         Route::put('/user/{id}', 'AdminController@user_update');
